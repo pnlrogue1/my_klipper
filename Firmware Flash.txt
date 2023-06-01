@@ -1,0 +1,57 @@
+phil@rpi2:~/klipper $ ls /dev/serial/by-id/*
+/dev/serial/by-id/usb-marlinfw.org_Marlin_USB_Device_14016010AF3A81285C6AF15CF50020C2-if00
+phil@rpi2:~/klipper $ sudo service klipper stop
+[sudo] password for phil:
+sudo: a password is required
+phil@rpi2:~/klipper $ sudo service klipper stop
+[sudo] password for phil:
+phil@rpi2:~/klipper $ service klipper status
+● klipper.service - Klipper 3D Printer Firmware SV1
+     Loaded: loaded (/etc/systemd/system/klipper.service; enabled; vendor preset: enabled)
+     Active: inactive (dead) since Thu 2023-06-01 23:35:44 BST; 7s ago
+       Docs: https://www.klipper3d.org/
+    Process: 1249 ExecStart=/home/phil/klippy-env/bin/python $KLIPPER_ARGS (code=killed, signal=TERM)
+   Main PID: 1249 (code=killed, signal=TERM)
+        CPU: 17.625s
+
+Jun 01 22:17:16 rpi2 systemd[1]: Started Klipper 3D Printer Firmware SV1.
+Jun 01 23:35:44 rpi2 systemd[1]: Stopping Klipper 3D Printer Firmware SV1...
+Jun 01 23:35:44 rpi2 systemd[1]: klipper.service: Succeeded.
+Jun 01 23:35:44 rpi2 systemd[1]: Stopped Klipper 3D Printer Firmware SV1.
+Jun 01 23:35:44 rpi2 systemd[1]: klipper.service: Consumed 17.625s CPU time.
+phil@rpi2:~/klipper $
+phil@rpi2:~/klipper $
+phil@rpi2:~/klipper $
+phil@rpi2:~/klipper $
+phil@rpi2:~/klipper $ make flash FLASH_DEVICE=/dev/serial/by-id/usb-marlinfw.org_Marlin_USB_Device_14016010AF3A81285C6AF15CF50020C2-if00
+  Flashing out/klipper.bin to /dev/serial/by-id/usb-marlinfw.org_Marlin_USB_Device_14016010AF3A81285C6AF15CF50020C2-if00Entering bootloader on /dev/serial/by-id/usb-marlinfw.org_Marlin_USB_Device_14016010AF3A81285C6AF15CF50020C2-if00
+Device reconnect on /sys/devices/platform/soc/3f980000.usb/usb1/1-1/1-1.4/1-1.4:1.0
+sudo dfu-util -p 1-1.4 -D out/klipper.bin
+
+dfu-util 0.9
+
+Copyright 2005-2009 Weston Schmidt, Harald Welte and OpenMoko Inc.
+Copyright 2010-2016 Tormod Volden and Stefan Schmidt
+This program is Free Software and has ABSOLUTELY NO WARRANTY
+Please report bugs to http://sourceforge.net/p/dfu-util/tickets/
+
+dfu-util: Invalid DFU suffix signature
+dfu-util: A valid DFU suffix will be required in a future dfu-util release!!!
+dfu-util: No DFU capable USB device available
+
+Failed to flash to /dev/serial/by-id/usb-marlinfw.org_Marlin_USB_Device_14016010AF3A81285C6AF15CF50020C2-if00: Error running dfu-util
+
+If flashing Klipper to a Smoothieboard for the first time it may be
+necessary to manually place the board into "bootloader mode" - press
+and hold the "Play button" and then press and release the "Reset
+button".
+
+When a Smoothieboard is in bootloader mode it can be flashed with the
+following command:
+  make flash FLASH_DEVICE=1d50:6015
+
+Alternatively, one can flash a Smoothieboard via SD card - copy the
+"out/klipper.bin" file to a file named "firmware.bin" on an SD card
+and then restart the Smoothieboard with that SD card.
+
+make: *** [src/lpc176x/Makefile:37: flash] Error 255
